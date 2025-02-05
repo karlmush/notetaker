@@ -8,9 +8,8 @@ import(
   "fmt"
 )
 
-var stmt *sql.Stmt
 
-func Create(params url.Values, w http.ResponseWriter){
+func Create(params url.Values, w http.ResponseWriter, stmt *sql.Stmt){
  TimeNow := time.Now()
  date := TimeNow.Format("2006-02-01")
  time := TimeNow.Format("15:04:05")

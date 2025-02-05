@@ -6,9 +6,7 @@ import (
   "net/http"
 )
 
-var db *sql.DB
-
-func List(w http.ResponseWriter) {
+func List(w http.ResponseWriter, db *sql.DB) {
  rows, err := db.Query("SELECT * FROM information")
  if err != nil {
    panic(err)

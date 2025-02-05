@@ -7,35 +7,30 @@ import (
   "database/sql"
   )
 
-func Start() {
-  StartServer()
+func Start(db *sql.DB, stmt *sql.Stmt) {
+  StartServer(db, stmt)
 }
 
-func DbAndStmt(database *sql.DB, statement *sql.Stmt) {
- db = database
- stmt = statement
-}
-
-func StartServer() {
-     http.HandleFunc("/", router)
+func StartServer(db *sql.DB, stmt *sql.Stmt) {
+     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+      router(db, stmt, w, r)
+     })
      http.ListenAndServe(":8080", nil)
 }
 
-func router (w http.ResponseWriter, r *http.Request) {
- w.Header().Set("Content-Type", "text/html; charset=utf-8")
-
+func router (db *sql.DB, stmt *sql.Stmt, w http.ResponseWriter, r *http.Request) {
  switch r.Method {
   case http.MethodGet:
    switch {
    case r.URL.Path == "/list":
     renderTemplate(w, "list.html")
-    List(w)
+    List(w, db)
    case r.URL.Path == "/create":
     renderTemplate(w, "create.html")
-     Create(r.URL.Query(), w)
+     Create(r.URL.Query(), w, stmt)
    case r.URL.Path == "/clear": 
     renderTemplate(w, "clear.html")
-    Clear(w)
+    Clear(w, db)
    default:
     renderTemplate(w, "main_page.html")
   }
