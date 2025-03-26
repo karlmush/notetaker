@@ -7,6 +7,24 @@ import (
 )
 
 
+func setCookieHandler(w http.ResponseWriter, session_id string) {
+  cookie := http.Cookie{
+  Name:     "SessionIdCookie",
+  Value:    session_id,
+  } 
+  http.SetCookie(w, &cookie)
+}
+
+func getCookieHandler(w http.ResponseWriter, r *http.Request) (cookieHash string){
+
+  cookie, err := r.Cookie("SessionIdCookie")
+  if err != nil {
+    fmt.Fprint(w, "Error while read cookie\n")
+    return
+  }
+  return cookie.Value
+}
+
 func gencookie() (x string, err error) { 
   infoCookie, err :=  generateCookie(20)
   if err != nil{
@@ -18,33 +36,6 @@ func gencookie() (x string, err error) {
   return infoCookie, nil
 }
 
-func setCookieHandler(w http.ResponseWriter, hash string) {
-
-  w.Header().Set("Content-Type", "text/html")
-
-  cookie := http.Cookie{
-  Name: "HashCookie",
-  Value: hash,
-  Path: "/",
-  MaxAge: 3600,
-  HttpOnly:  false,
-  Secure: false,
-} 
-
-  fmt.Fprint(w, "Attempting to set cookie\n")
-  http.SetCookie(w, &cookie)
-  fmt.Fprint(w, "Cookie succesfully set\n")
-}
-
-func getCookieHandler(w http.ResponseWriter, r *http.Request) {
-
-  cookie, err := r.Cookie("HashCookie")
-  if err != nil {
-    fmt.Fprint(w, "Error while read cookie\n")
-    return
-  }
-  fmt.Fprintf(w, "%v", cookie)
-}
 
 func generateCookie(length int) (string, error) {
   const charset = "abcdefghijklmnopqrstuvwxyz" +

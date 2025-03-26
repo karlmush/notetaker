@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <meta charset="utf-8" />
-  <title>Log in</title>
-  <style>
-   article, aside, details, figcaption, figure, footer,header,
-   hgroup, menu, nav, section { display: block; }
-  </style>
- </head>
- <body>
-   <a href="/register">Don't have account? Go to registration page</a><br>
-   <form method="post"> 
-   <p>Login</p>
-  <input name="login" type="text" id="login" value="karl" method="post" placeholder="write here your login"><br>
-   <p>Password</p>
-  <input name="password" type="password" id="password" value="1q2w3e" method="post" placeholder="write here your login"><br>
-  <input type="Submit" value="Log in">
-   </form> 
- </body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Log in</title>
+    <style>
+article, aside, details, figcaption, figure, footer,header,
+hgroup, menu, nav, section { display: block; }
+<style>
+.error {
+  border: 1px solid red;
+}
+</style>
+    </style>
+  </head>
+  <body>
+    <a href="/register">Don't have account? Go to registration page</a><br>
+    <form method="post"> 
+      <input name="login" type="text" id="login" method="post" placeholder="write here your login"><br><br>
+      {{if .LoginError}}<p style="color: red;">{{.LoginError}}</p>{{end}}
+      <input name="password" type="password" id="password" method="post" placeholder="write here your password"><br><br>
+      {{if .PasswordError}}<p style="color: red;">{{.PasswordError}}</p>{{end}}
+      <input type="Submit" value="Log in">
+    </form> 
+  </body>
 </html>
